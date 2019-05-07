@@ -21,6 +21,7 @@
     },
     "dependencies": {
         "bootstrap-v4-rtl": "^4.3.1-2",
+        "sweetalert2": "^8.10.1",
         "vazir-font": "^19.2.0"
     }
 }

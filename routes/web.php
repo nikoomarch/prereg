@@ -11,10 +11,15 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+use Illuminate\Support\Facades\Route;
 
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'HomeController@index')->name('index');
+Route::get('/course/register','HomeController@create')->name('course.register');
+Route::post('/course/store', 'HomeController@store')->name('store');
+Route::post('/course/confirm','HomeController@confirm')->name('confirm');
+Route::get('/course/edit',"HomeController@edit")->name('edit');
+Route::post('/course/update','HomeController@update')->name('update');
+//authentication routes
+Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
+Route::post('login', 'Auth\LoginController@login');
+Route::post('logout', 'Auth\LoginController@logout')->name('logout');

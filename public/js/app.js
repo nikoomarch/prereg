@@ -18656,10 +18656,6 @@ try {
   __webpack_require__(/*! bootstrap-v4-rtl */ "./node_modules/bootstrap-v4-rtl/dist/js/bootstrap.js");
 } catch (e) {}
 
-var app = new Vue({
-  el: '#app'
-});
-
 /***/ }),
 
 /***/ "./resources/sass/app.scss":
