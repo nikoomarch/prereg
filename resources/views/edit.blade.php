@@ -8,7 +8,7 @@
             @endif
             <form action="{{route('update')}}" method="post">
                 @csrf
-                <p>آقای/خانم {{\Illuminate\Support\Facades\Auth::user()->fullName}} لطفا <strong> حداکثر 18 واحد</strong> انتخاب کنید.</p>
+                <p class="text-center size" style="font-size: 18px;"> لطفا <strong> حداکثر 18 واحد</strong> انتخاب کنید و در انتها دکمه <span class="text-success">ثبت</span> را فشار دهید</p>
                 <p>شما قبلا درس های زیر را انتخاب کرده اید:</p>
                 <div class="row">
                     @foreach($courses as $course)

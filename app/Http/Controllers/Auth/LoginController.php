@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class LoginController extends Controller
 {
@@ -55,5 +56,28 @@ class LoginController extends Controller
                      'ورودی های سال 97 امکان ورود به این سامانه را ندارند.',
                 ]);
         }
+    }
+
+    protected function validateLogin(Request $request)
+    {
+        $request->validate([
+            $this->username() => 'required|string',
+            'password' => 'required|string',
+            'g-recaptcha-response' => 'required|recaptcha'
+        ]);
+    }
+
+    public function showLoginForm()
+    {
+        $success = Session::get('success');
+        return view('auth.login',compact('success'));
+    }
+    public function logout(Request $request)
+    {
+        $this->guard()->logout();
+
+        $request->session()->invalidate();
+
+        return $this->loggedOut($request) ?: redirect()->route('login');
     }
 }

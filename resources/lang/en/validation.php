@@ -94,7 +94,7 @@ return [
     'numeric' => 'The :attribute must be a number.',
     'present' => 'The :attribute field must be present.',
     'regex' => 'The :attribute format is invalid.',
-    'required' => 'The :attribute field is required.',
+    'required' => 'پر کردن :attribute لازم است',
     'required_if' => 'The :attribute field is required when :other is :value.',
     'required_unless' => 'The :attribute field is required unless :other is in :values.',
     'required_with' => 'The :attribute field is required when :values is present.',
@@ -128,8 +128,8 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'g-recaptcha-response' => [
+            'required' => 'لطفا ریکپچا را تایید کنید.',
         ],
     ],
 
@@ -144,6 +144,8 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'g-recaptcha-response' => 'ریکپچا'
+    ],
 
 ];

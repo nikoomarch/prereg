@@ -35,7 +35,6 @@ class HomeController extends Controller
 //            $user->password = Hash::make($user->password);
 //            $user->save();
 //        }
-        $state = Session::get('success');
         return view('welcome',compact('state'));
     }
 
@@ -86,6 +85,7 @@ class HomeController extends Controller
         $course_ids = $request->post('course');
         $user = Auth::user();
         $user->courses()->sync($course_ids);
-        return Redirect::to('/')->with('success', true);
+        Auth::logout();
+        return Redirect::to('/login')->with('success', true);
     }
 }

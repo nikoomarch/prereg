@@ -9,21 +9,18 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Scripts -->
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
-
     <!-- Styles -->
-    <link href="{{ secure_asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body class="rtl">
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
             <div class="container">
+                @guest
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
+                @endguest
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -43,11 +40,7 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
-                        @guest
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">ورود</a>
-                            </li>
-                        @else
+                        @auth
                             <li class="nav-link"> {{\Illuminate\Support\Facades\Auth::user()->fullName}}</li>
                             <li class="nav-item">
                                 <a class="nav-link" href=""
@@ -58,7 +51,7 @@
                                     @csrf
                                 </form>
                             </li>
-                        @endguest
+                        @endauth
                     </ul>
                 </div>
             </div>
@@ -68,8 +61,9 @@
             @yield('content')
         </main>
     </div>
-    <script src="{{ secure_asset('js/app.js') }}" defer></script>
-    <script src="{{secure_asset('js/sweetalert2.js')}}"></script>
+    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{asset('js/sweetalert2.js')}}"></script>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
     @yield('script')
 </body>
 </html>
