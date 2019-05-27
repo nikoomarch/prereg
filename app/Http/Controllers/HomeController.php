@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace studentPreRegisteration\Http\Controllers;
 
-use App\Course;
-use App\User;
+use studentPreRegisteration\Course;
+use studentPreRegisteration\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -35,13 +35,14 @@ class HomeController extends Controller
 //            $user->password = Hash::make($user->password);
 //            $user->save();
 //        }
-        return view('welcome',compact('state'));
+        return view('welcome', compact('state'));
     }
 
     public function create()
     {
-        if(Auth::user()->courses()->count() !=0 )
+        if (Auth::user()->courses()->count() != 0) {
             return redirect()->route('edit');
+        }
         $courses = Course::all();
         return view('create', compact('courses', 'message'));
     }
@@ -51,21 +52,22 @@ class HomeController extends Controller
         $course_ids = $request->post('course');
         $courses = Course::findMany($course_ids);
         $units = $courses->sum('unit');
-        if ($units <= 18){
+        if ($units <= 18) {
             $user = Auth::user();
-            return view('confirm',compact('user','courses'));
+            return view('confirm', compact('user', 'courses'));
         }
         return Redirect::back()->withErrors(['لطفا حداکثر 18 واحد انتخاب کنید!']);
     }
 
     public function edit()
     {
-        if(Auth::user()->courses()->count() ==0 )
+        if (Auth::user()->courses()->count() == 0) {
             return redirect()->route('course.register');
+        }
         $user = Auth::user();
         $user_courses = $user->courses->pluck('id');
         $courses = Course::all();
-        return view('edit', compact('user_courses','courses'));
+        return view('edit', compact('user_courses', 'courses'));
     }
 
     public function update(Request $request)
@@ -73,9 +75,9 @@ class HomeController extends Controller
         $course_ids = $request->post('course');
         $courses = Course::findMany($course_ids);
         $units = $courses->sum('unit');
-        if ($units <= 18){
+        if ($units <= 18) {
             $user = Auth::user();
-            return view('confirm',compact('user','courses'));
+            return view('confirm', compact('user', 'courses'));
         }
         return Redirect::back()->withErrors(['لطفا حداکثر 18 واحد انتخاب کنید!']);
     }
@@ -87,5 +89,10 @@ class HomeController extends Controller
         $user->courses()->sync($course_ids);
         Auth::logout();
         return Redirect::to('/login')->with('success', true);
+    }
+
+    public function hello()
+    {
+
     }
 }

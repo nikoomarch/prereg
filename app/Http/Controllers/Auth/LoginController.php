@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace studentPreRegisteration\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
+use studentPreRegisteration\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -47,13 +47,17 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user)
     {
-        if (substr($user->username,0,2) == '97') {
+        $entrance_year = substr($user->username,0,2);
+        $whitelist = [
+            '9123088011'
+        ];
+        if (($entrance_year>96 || $entrance_year<94)&&!in_array($request->username,$whitelist)) {
             Auth::logout($request);
 
 
             return redirect()->back()
                 ->withErrors([
-                     'ورودی های سال 97 امکان ورود به این سامانه را ندارند.',
+                     'تنها ورودی های سال 94، 95 و 96 امکان ورود به این سامانه را دارند.',
                 ]);
         }
     }

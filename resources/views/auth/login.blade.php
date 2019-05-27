@@ -27,7 +27,7 @@
                                     <input id="username" type="text" class="form-control text-center" name="username" value="{{ old('username') }}" required autofocus>
                                 </div>
                                 <div class="form-group">
-                                    <label for="password" class="">گذرواژه</label>
+                                    <label for="password" class="">گذرواژه (بدون صفر ابتدا)</label>
                                     <input id="password" type="password" class="form-control text-center" name="password" required autocomplete="current-password">
                                 </div>
                             </div>

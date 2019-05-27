@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Providers;
+namespace studentPreRegisteration\Providers;
 
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Validator::extend('recaptcha', 'App\\Validators\\ReCaptcha@validate');
+        Validator::extend('recaptcha', 'studentPreRegisteration\\Validators\\ReCaptcha@validate');
         if(!env('APP_DEBUG'))
         $this->app['request']->server->set('HTTPS', true);
     }
