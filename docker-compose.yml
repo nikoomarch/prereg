@@ -1,21 +1,27 @@
-version: "2"
+version: "3.7"
 services:
   nginx:
     build:
-      context: nginx
-      dockerfile: ./Dockerfile
+      context: docker/nginx
+      dockerfile: Dockerfile
     volumes:
-      - ../:/var/www
+      - .:/var/www
     ports:
       - 8012:80
     links:
       - app
+  node:
+    build:
+      context: docker/node
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/var/www
   app:
     build:
-      context: ./
-      dockerfile: ./Dockerfile
+      context: docker
+      dockerfile: Dockerfile
     volumes:
-      - ../:/var/www
+      - .:/var/www
     links:
       - mysql
     environment:
@@ -29,5 +35,4 @@ services:
     ports:
       - 3310:3306
     volumes:
-      - ../datadir:/var/lib/mysql
-
+      - ./datadir/:/var/lib/mysql
