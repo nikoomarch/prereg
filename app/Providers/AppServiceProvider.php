@@ -5,6 +5,7 @@ namespace studentPreRegisteration\Providers;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Contracts\Routing\UrlGenerator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,10 +24,10 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(UrlGenerator $url)
     {
         Validator::extend('recaptcha', 'studentPreRegisteration\\Validators\\ReCaptcha@validate');
-        if(!env('APP_DEBUG'))
-        $this->app['request']->server->set('HTTPS', true);
+        if(\App::environment() === 'production')
+        $url->forceScheme('https');
     }
 }

@@ -28,7 +28,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/course/register';
+    protected $redirectTo = '/redirection';
 
     /**
      * Create a new controller instance.
@@ -47,28 +47,35 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user)
     {
-        $entrance_year = substr($user->username,0,2);
-        $whitelist = [
-            '9123088011'
-        ];
-        if (($entrance_year>96 || $entrance_year<94)&&!in_array($request->username,$whitelist)) {
+        $entranceTerm = $user->entranceTerm;
+        if($user->field_id!=null)
+            $selection = $user->field->selection;
+        if ($user->role == 'student' and ($selection->endDate < now() || $user->isAllowed == false)) {
             Auth::logout($request);
 
 
             return redirect()->back()
                 ->withErrors([
-                     'تنها ورودی های سال 94، 95 و 96 امکان ورود به این سامانه را دارند.',
+                     'شما امکان ورود به این سامانه را ندارید.',
                 ]);
         }
     }
 
     protected function validateLogin(Request $request)
     {
-        $request->validate([
-            $this->username() => 'required|string',
-            'password' => 'required|string',
-            'g-recaptcha-response' => 'required|recaptcha'
-        ]);
+        if(\App::environment() === 'production') {
+            $request->validate([
+                $this->username() => 'required|string',
+                'password' => 'required|string',
+                'g-recaptcha-response' => 'required|recaptcha'
+            ]);
+        }
+        else{
+            $request->validate([
+                $this->username() => 'required|string',
+                'password' => 'required|string',
+            ]);
+        }
     }
 
     public function showLoginForm()

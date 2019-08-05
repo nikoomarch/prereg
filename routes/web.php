@@ -14,19 +14,30 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-//Route::get('/', 'HomeController@index')->name('index');
-Route::get('/course/register','HomeController@create')->name('course.register');
-Route::post('/course/store', 'HomeController@store')->name('store');
-Route::post('/course/confirm','HomeController@confirm')->name('confirm');
-Route::get('/course/edit',"HomeController@edit")->name('edit');
-Route::post('/course/update','HomeController@update')->name('update');
-//authentication routes
+Auth::routes();
+
 Route::get('/',function (){
-    if(Auth::user())
-        return redirect()->route('course.register');
-    else
-        return redirect()->route('login');
+    return redirect()->route('login');
 });
-Route::get('/login', 'Auth\LoginController@showLoginForm')->name('login');
-Route::post('/login', 'Auth\LoginController@login');
-Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
+
+Route::get('/redirection',function(){
+    if(Auth::user()->role == 'student')
+        return redirect()->route('register.create');
+    else
+        return redirect()->route('user.index');
+})->middleware('auth');
+
+Route::resource('term','TermController');
+Route::resource('field','FieldController');
+Route::get('/test','UserController@test');
+
+Route::get('user/createFromFile','UserController@createFromFile')->name('user.createFromFile');
+Route::post('user/storeFormFile','UserController@storeFromFile')->name('user.storeFromFile');
+Route::resource('user','UserController');
+Route::resource('course','CourseController');
+Route::resource('selection','SelectionController');
+
+Route::post('register/confirm','RegisterController@confirm')->name('register.confirm');
+Route::get('register/edit','RegisterController@edit')->name('register.edit');
+Route::get('register/create','RegisterController@create')->name('register.create');
+Route::post('register','RegisterController@store')->name('register.store');

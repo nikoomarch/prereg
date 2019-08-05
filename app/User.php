@@ -5,6 +5,7 @@ namespace studentPreRegisteration;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable
 {
@@ -16,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'fullName', 'username', 'password',
+        'name', 'family' , 'field_id', 'role' , 'username', 'password', 'gender','nationalCode', 'entranceTerm'
     ];
 
     /**
@@ -36,8 +37,23 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    public function field()
+    {
+        return $this->belongsTo(Field::class);
+    }
+
+    public function setGenderAttribute($value)
+    {
+        if($value == null)
+        $this->attributes['gender'] = null;
+        elseif($value == 'زن')
+            $this->attributes['gender'] = 'F';
+        elseif ($value == 'مرد')
+            $this->attributes['gender'] = 'M';
+    }
+
     public function courses()
     {
-        return $this->belongsToMany(Course::class,'student_courses','user_id');
+        return $this->belongsToMany(Course::class,'student_courses');
     }
 }

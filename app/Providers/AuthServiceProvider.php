@@ -4,6 +4,16 @@ namespace studentPreRegisteration\Providers;
 
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use studentPreRegisteration\Course;
+use studentPreRegisteration\Field;
+use studentPreRegisteration\Policies\CoursePolicy;
+use studentPreRegisteration\Policies\FieldPolicy;
+use studentPreRegisteration\Policies\SelectionPolicy;
+use studentPreRegisteration\Policies\StudentCoursePolicy;
+use studentPreRegisteration\Policies\TermPolicy;
+use studentPreRegisteration\Selection;
+use studentPreRegisteration\StudentCourse;
+use studentPreRegisteration\Term;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -13,7 +23,11 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        // 'studentPreRegisteration\Model' => 'studentPreRegisteration\Policies\ModelPolicy',
+        Term::class => TermPolicy::class,
+        Field::class => FieldPolicy::class,
+        Course::class => CoursePolicy::class,
+        Selection::class => SelectionPolicy::class,
+        StudentCourse::class => StudentCoursePolicy::class
     ];
 
     /**
