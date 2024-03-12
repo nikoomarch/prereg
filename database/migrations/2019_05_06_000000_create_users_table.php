@@ -4,31 +4,26 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUsersTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('field_id')->nullable();
-            $table->integer('entranceTerm')->nullable();
+            $table->id();
+            $table->foreignId('field_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignId('entrance_term_id')->nullable()->constrained('terms')->cascadeOnDelete();
             $table->string('name');
             $table->string('family');
-            $table->string('gender')->nullable();
-            $table->string('role');
+            $table->enum('gender', ['M','F'])->nullable();
             $table->string('username')->unique();
-            $table->string('nationalCode')->nullable();
-            $table->boolean('isAllowed')->default(false);
+            $table->string('national_code')->nullable();
+            $table->boolean('is_allowed')->default(false);
             $table->string('password');
-            $table->foreign('field_id')
-                ->references('id')
-                ->on('fields')
-                ->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -38,8 +33,8 @@ class CreateUsersTable extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('group_manager');
     }
-}
+};

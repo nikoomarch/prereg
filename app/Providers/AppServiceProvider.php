@@ -1,7 +1,8 @@
 <?php
 
-namespace studentPreRegisteration\Providers;
+namespace App\Providers;
 
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
@@ -24,10 +25,9 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot(UrlGenerator $url)
+    public function boot()
     {
-        Validator::extend('recaptcha', 'studentPreRegisteration\\Validators\\ReCaptcha@validate');
-        if(\App::environment() === 'production')
-        $url->forceScheme('https');
+        Paginator::useBootstrap();
     }
+
 }

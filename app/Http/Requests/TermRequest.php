@@ -1,6 +1,6 @@
 <?php
 
-namespace studentPreRegisteration\Http\Requests;
+namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -24,7 +24,7 @@ class TermRequest extends FormRequest
     public function rules()
     {
         return [
-            'code'=>'required|unique:terms,code'
+            'code'=>'required|unique:terms,code|numeric'
         ];
     }
 }

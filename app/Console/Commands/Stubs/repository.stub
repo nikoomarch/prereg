@@ -1,0 +1,16 @@
+<?php
+
+namespace {{ namespace }};
+
+use {{ namespacedModel }};
+
+class {{ class }} extends RepositoryAbstract
+{
+    /**
+     * @return string
+     */
+    public function model()
+    {
+        return {{ model }}::class;
+    }
+}

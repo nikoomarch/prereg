@@ -2,20 +2,16 @@
 
 @section('content')
 <div class="container">
-    <div class="row justify-content-center">
+    <div class="row justify-content-center mt-5">
         <div class="col-md-8">
-            <p class="text-center text-danger">لطفا با استفاده از شماره دانشجویی بعنوان نام کاربری و کد ملی (یا شماره گذرنامه) بعنوان رمز عبور وارد سامانه شوید.</p>
-            <p class="text-center text-danger">
-                در حین تعیین دروس، پیش نیازها و هم نیازها را رعایت کنید و حداکثر 18 واحد انتخاب نمایید و پس از انتخاب "دکمه ثبت" را فشار دهید.
-            </p>
         </div>
         <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">ورود</div>
+            <div class="card text-center" style="background-color: rgba(255, 255, 255, 0.33);">
+                <div class="card-header" style="background-color: white;">سامانه انتخاب واحد</div>
                 @if($errors->any())
                     <div class="alert m-3 alert-danger"><strong>خطا:</strong>&nbsp;{{$errors->first()}}</div>
                 @endif
-                <div class="card-body">
+                <div class="card-body" style="background-color: rgba(0,0,0,0)">
                     <form method="POST" action="/login">
                         @csrf
 
@@ -23,24 +19,24 @@
                             <div class="col-md-3"></div>
                             <div class="col-md-6 col-md-offset-3 text-center">
                                 <div class="form-group">
-                                    <label for="email" class="">نام کاربری</label>
-                                    <input id="username" type="text" class="form-control text-center" name="username" value="{{ old('username') }}" required autofocus>
+                                    <input id="username" type="text" class="form-control text-center" name="username" value="{{ old('username') }}" placeholder="نام کاربری (شماره دانشجویی)" required autofocus>
                                 </div>
                                 <div class="form-group">
-                                    <label for="password" class="">گذرواژه (بدون صفر ابتدا)</label>
-                                    <input id="password" type="password" class="form-control text-center" name="password" required autocomplete="current-password">
+                                    <input id="password" type="password" class="form-control text-center" name="password" required autocomplete="current-password" placeholder="گذرواژه (کد ملی)">
+                                </div>
+                                <img src="{{ captcha_src('flat') }}" />
+                                <div class="form-group mt-2">
+                                    <input type="text" class="form-control text-center" name="captcha" placeholder="کد کپچا" required>
                                 </div>
                             </div>
                         </div>
                         <div class="text-center">
-                            <div class="g-recaptcha m-2" style="display: inline-block;"
-                                 data-sitekey="{{env('GOOGLE_RECAPTCHA_KEY')}}">
-                            </div>
+
                         </div>
 
                         <div class="form-group mt-2">
                             <div class="col-md-12">
-                                <button type="submit" class="btn btn-outline-primary btn-block">
+                                <button type="submit" class="btn btn-primary btn-block">
                                     ورود
                                 </button>
                             </div>

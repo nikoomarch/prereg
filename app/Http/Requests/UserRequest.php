@@ -1,6 +1,6 @@
 <?php
 
-namespace studentPreRegisteration\Http\Requests;
+namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -23,13 +23,26 @@ class UserRequest extends FormRequest
      */
     public function rules()
     {
+        if($this->method() == 'PUT')
         return [
             'name' => 'required',
             'family' => 'required',
-            'username' => 'required',
-            'nationalCode' => 'required',
-            'gender' => 'required_if:role,student',
-            'field_id' => 'required'
+            'username' => 'required|unique:users,username,' . $this->user->id,
+            'national_code' => 'required|doesnt_start_with:0',
+            'gender' => 'required',
+            'entrance_term_id'=>'required|exists:terms,id',
+            'is_allowed' => 'boolean'
+
         ];
+        else
+            return [
+                'name' => 'required',
+                'family' => 'required',
+                'username' => 'required|unique:users,username',
+                'national_code' => 'required|doesnt_start_with:0',
+                'gender' => 'required',
+                'entrance_term_id'=>'required|exists:terms,id',
+                'is_allowed' => 'boolean'
+            ];
     }
 }

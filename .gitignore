@@ -2,15 +2,14 @@
 /public/hot
 /public/storage
 /storage/*.key
+/storage/debugbar
 /vendor
 /datadir
 .idea/
 .env
+/docs
 .phpunit.result.cache
 Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
-d.txt
-students.xslx
-courses.xslx

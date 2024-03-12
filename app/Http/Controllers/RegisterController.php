@@ -1,76 +1,40 @@
 <?php
 
-namespace studentPreRegisteration\Http\Controllers;
+namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
-use studentPreRegisteration\Course;
-use studentPreRegisteration\Field;
-use studentPreRegisteration\StudentCourse;
+use App\Repositories\CourseRepository;
+use App\Repositories\SelectionRepository;
 use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     */
+    public function __construct()
+    {
+        $this->selectionRepository = new SelectionRepository();
+        $this->courseRepository = new CourseRepository();
+        $this->courseRepository = new CourseRepository();
+    }
+
     public function create()
     {
-        $this->authorize('create', StudentCourse::class);
-        if (Auth::user()->courses->count() != 0) {
-            return redirect()->route('register.edit');
-        }
-        $courses = Auth::user()->field->courses;
-        return view('register.create', compact('courses'));
+        $selection = $this->selectionRepository->getFieldActiveSelection(auth()->user()->field_id);
+        $registeredCourses = \auth()->user()->registeredCourses()->where('selection_id', $selection->id)->get();
+        $courses = $this->courseRepository->getBy('field_id', auth()->user()->field_id);
+        return view('register.create', compact('courses', 'selection', 'registeredCourses'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @return \Illuminate\Http\Response
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     */
-    public function edit()
-    {
-        $this->authorize('create', StudentCourse::class);
-        if (Auth::user()->courses->count() == 0) {
-            return redirect()->route('register.create');
-        }
-        $user = Auth::user();
-        $user_courses = $user->courses()->select('courses.id')->get();
-        $courses = Auth::user()->field->courses;
-        return view('register.edit', compact('user_courses', 'courses'));
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     */
     public function store(Request $request)
     {
-        $this->authorize('create', StudentCourse::class);
-        $course_ids = $request->post('course');
-        $courses = Course::findMany($course_ids);
-        $units = $courses->sum('unit');
-        $max = Auth::user()->field->selection->max;
-        if ($units <= $max)
-            return view('register.confirm', compact('courses'));
-        return Redirect::back()->withErrors(['لطفا حداکثر ' . $max . ' واحد انتخاب کنید.']);
-    }
+        $courseIds = $request->post('courses', []);
+        $courses = $this->courseRepository->findMany($courseIds);
+        $selection = $this->selectionRepository->getFieldActiveSelection(auth()->user()->field_id);
 
-    public function confirm(Request $request)
-    {
-        $this->authorize('create', StudentCourse::class);
-        $course_ids = $request->post('course');
-        $user = Auth::user();
-        $user->courses()->sync($course_ids);
-        Auth::logout();
-        return Redirect::to('/login')->with('success', true);
+        if ($courses->sum('unit') > $selection->max)
+            return back()->withErrors([trans('messages.max_units', ['units' => $selection->max])])->withInput();
+
+        auth()->user()->registeredCourses()->where('student_courses.selection_id',$selection->id)->detach();
+        auth()->user()->registeredCourses()->attach($courseIds, ['selection_id' => $selection->id]);
+
+        return redirect()->route('register.create')->with('alert', ['message' => trans('messages.course_selection_success'), 'icon' => 'success', 'title' => trans('messages.success')]);
     }
 }

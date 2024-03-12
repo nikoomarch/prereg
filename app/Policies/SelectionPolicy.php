@@ -1,78 +1,78 @@
 <?php
 
-namespace studentPreRegisteration\Policies;
+namespace App\Policies;
 
-use studentPreRegisteration\User;
-use studentPreRegisteration\Selection;
+use App\Models\User;
+use App\Models\Selection;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class SelectionPolicy
 {
     use HandlesAuthorization;
-    
+
     /**
      * Determine whether the user can view any selections.
      *
-     * @param  \studentPreRegisteration\User  $user
+     * @param  \App\Models\User  $user
      * @return mixed
      */
-    public function viewAll(User $user)
+    public function viewAny(User $user)
     {
-        return $user->role == 'groupManager';
+        return $user->hasRole('group_manager');
     }
 
     /**
      * Determine whether the user can view the selection.
      *
-     * @param  \studentPreRegisteration\User  $user
-     * @param  \studentPreRegisteration\Selection  $selection
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Selection  $selection
      * @return mixed
      */
     public function view(User $user, Selection $selection)
     {
-        return $user->role == 'groupManager';
+        return $user->hasRole('group_manager');
     }
 
     /**
      * Determine whether the user can create selections.
      *
-     * @param  \studentPreRegisteration\User  $user
+     * @param  \App\Models\User  $user
      * @return mixed
      */
     public function create(User $user)
     {
-        return $user->role == 'groupManager';
+        return $user->hasRole('group_manager');
     }
 
     /**
      * Determine whether the user can update the selection.
      *
-     * @param  \studentPreRegisteration\User  $user
-     * @param  \studentPreRegisteration\Selection  $selection
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Selection  $selection
      * @return mixed
      */
     public function update(User $user, Selection $selection)
     {
-        return $user->role == 'groupManager';
+        return $user->hasRole('group_manager');
     }
 
     /**
      * Determine whether the user can delete the selection.
      *
-     * @param  \studentPreRegisteration\User  $user
-     * @param  \studentPreRegisteration\Selection  $selection
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Selection  $selection
      * @return mixed
      */
     public function delete(User $user, Selection $selection)
     {
-        return $user->role == 'groupManager';
+        return $user->hasRole('group_manager');
     }
 
     /**
      * Determine whether the user can restore the selection.
      *
-     * @param  \studentPreRegisteration\User  $user
-     * @param  \studentPreRegisteration\Selection  $selection
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Selection  $selection
      * @return mixed
      */
     public function restore(User $user, Selection $selection)
@@ -83,8 +83,8 @@ class SelectionPolicy
     /**
      * Determine whether the user can permanently delete the selection.
      *
-     * @param  \studentPreRegisteration\User  $user
-     * @param  \studentPreRegisteration\Selection  $selection
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Selection  $selection
      * @return mixed
      */
     public function forceDelete(User $user, Selection $selection)

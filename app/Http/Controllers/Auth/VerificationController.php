@@ -1,8 +1,8 @@
 <?php
 
-namespace studentPreRegisteration\Http\Controllers\Auth;
+namespace App\Http\Controllers\Auth;
 
-use studentPreRegisteration\Http\Controllers\Controller;
+use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\VerifiesEmails;
 
 class VerificationController extends Controller
@@ -21,7 +21,7 @@ class VerificationController extends Controller
     use VerifiesEmails;
 
     /**
-     * Where to redirect users after verification.
+     * Where to redirect group_manager after verification.
      *
      * @var string
      */

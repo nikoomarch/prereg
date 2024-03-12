@@ -1,6 +1,6 @@
 <?php
 
-namespace studentPreRegisteration\Http\Requests;
+namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -23,10 +23,15 @@ class CourseRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'field_id' => 'required',
-            'name' => 'required',
-            'unit' => 'required'
-        ];
+        if ($this->method() == 'POST')
+            return [
+                'name' => 'required|unique:courses,name,NULL,id,field_id,' . auth()->user()->field_id,
+                'unit' => 'required|numeric'
+            ];
+        elseif ($this->method() == 'PUT')
+            return [
+                'name' => 'required|unique:courses,name,' . $this->course->id . ',id,field_id,' . auth()->user()->field_id,
+                'unit' => 'required|numeric'
+            ];
     }
 }

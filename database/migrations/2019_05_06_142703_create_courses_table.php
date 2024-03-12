@@ -4,24 +4,20 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCoursesTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('courses', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('field_id');
+            $table->id();
+            $table->foreignId('field_id')->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->integer('unit');
-            $table->foreign('field_id')
-                ->references('id')
-                ->on('fields')
-                ->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -31,8 +27,8 @@ class CreateCoursesTable extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('courses');
     }
-}
+};

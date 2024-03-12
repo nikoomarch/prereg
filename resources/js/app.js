@@ -9,14 +9,22 @@ window.Swal = require('sweetalert2');
 
 window.axios = require('axios');
 require('select2');
-
+window.NProgress = require('nprogress');
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+require('./persiannumber.js');
 
-import '@fortawesome/fontawesome-free/js/fontawesome'
-import '@fortawesome/fontawesome-free/js/solid'
-import '@fortawesome/fontawesome-free/js/regular'
-import '@fortawesome/fontawesome-free/js/brands'
+window.clearForm = function clearForm(fields) {
+    fields.forEach(function (field) {
+        $('#' + field).val('');
+    });
+};
 
+window.clearErrors = function clearErrors(fields) {
+    fields.forEach(function (field) {
+        $('#' + field).removeClass('is-invalid');
+        $('#' + field + '-error').text('');
+    });
+};
 /**
  * Next we will register the CSRF Token as a common header with Axios so that
  * all outgoing HTTP requests automatically have it attached. This is just

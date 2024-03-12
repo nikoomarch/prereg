@@ -4,26 +4,23 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSelectionsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('selections', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('field_id');
-            $table->date('startDate');
-            $table->date('endDate');
-            $table->string('terms');
-            $table->foreign('field_id')
-                ->references('id')
-                ->on('fields')
-                ->onDelete('cascade');
+            $table->id();
+            $table->foreignId('field_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->date('start_date');
+            $table->date('end_date');
+            $table->string('term');
             $table->integer('max');
+            $table->boolean('is_active')->default(false);
             $table->timestamps();
         });
     }
@@ -33,8 +30,8 @@ class CreateSelectionsTable extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('selections');
     }
-}
+};

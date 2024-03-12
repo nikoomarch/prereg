@@ -2,22 +2,31 @@
 
 // Variables
 @import 'variables';
+@import "custom-switch";
 
 @import "~bootstrap-v4-rtl/scss/bootstrap-rtl";
 @import "~vazir-font/dist/font-face.css";
 @import "~sweetalert2/src/sweetalert2.scss";
 @import "~select2/dist/css/select2.min.css";
+@import "~@ttskch/select2-bootstrap4-theme/dist/select2-bootstrap4.css";
 @import "~persian-datepicker/dist/css/persian-datepicker.min.css";
-body{
+@import "~nprogress/nprogress.css";
+@import "~@fortawesome/fontawesome-free/css/all.min.css";
+@import "select2-bootstrap4.css";
+
+*{
   font-family: 'Vazir', sans-serif;
 }
 
-.navbar-laravel {
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+body{
+  background-color: #f1f2f7;
 }
 .hidden{
   display: none;
+}
+
+.pointer{
+  cursor: pointer;
 }
 
 //loader
@@ -31,4 +40,12 @@ body{
   height: 100%;
   z-index: 9999;
   background: url('/Preloader.gif') center no-repeat #fff;
+}
+
+full-bg {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
 }

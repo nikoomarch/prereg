@@ -1,10 +1,12 @@
 <?php
 
-namespace studentPreRegisteration\Http\Controllers\Auth;
+namespace App\Http\Controllers\Auth;
 
-use studentPreRegisteration\Http\Controllers\Controller;
+use App\Http\Controllers\Controller;
+use App\Models\Selection;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
@@ -15,7 +17,7 @@ class LoginController extends Controller
     | Login Controller
     |--------------------------------------------------------------------------
     |
-    | This controller handles authenticating users for the application and
+    | This controller handles authenticating group_manager for the application and
     | redirecting them to your home screen. The controller uses a trait
     | to conveniently provide its functionality to your applications.
     |
@@ -24,11 +26,11 @@ class LoginController extends Controller
     use AuthenticatesUsers;
 
     /**
-     * Where to redirect users after login.
+     * Where to redirect group_manager after login.
      *
      * @var string
      */
-    protected $redirectTo = '/redirection';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -47,30 +49,24 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user)
     {
-        $entranceTerm = $user->entranceTerm;
-        if($user->field_id!=null)
-            $selection = $user->field->selection;
-        if ($user->role == 'student' and ($selection->endDate < now() || $user->isAllowed == false)) {
-            Auth::logout($request);
-
-
+        if($user->hasRole('student') and !$user->is_allowed){
+            Auth::logout();
             return redirect()->back()
                 ->withErrors([
-                     'شما امکان ورود به این سامانه را ندارید.',
+                    trans('messages.not_allowed'),
                 ]);
         }
     }
 
     protected function validateLogin(Request $request)
     {
-        if(\App::environment() === 'production') {
+        if (App::environment() === 'production') {
             $request->validate([
                 $this->username() => 'required|string',
                 'password' => 'required|string',
-                'g-recaptcha-response' => 'required|recaptcha'
+                'captcha' => 'required|captcha'
             ]);
-        }
-        else{
+        } else {
             $request->validate([
                 $this->username() => 'required|string',
                 'password' => 'required|string',
@@ -81,8 +77,9 @@ class LoginController extends Controller
     public function showLoginForm()
     {
         $success = Session::get('success');
-        return view('auth.login',compact('success'));
+        return view('auth.login', compact('success'));
     }
+
     public function logout(Request $request)
     {
         $this->guard()->logout();
@@ -90,5 +87,20 @@ class LoginController extends Controller
         $request->session()->invalidate();
 
         return $this->loggedOut($request) ?: redirect()->route('login');
+    }
+
+    protected function attemptLogin(Request $request)
+    {
+        $fields = $request->only($this->username(),'password');
+        if(strlen($fields['password']) != 10)
+            return $this->guard()->attempt(
+                $fields, $request->filled('remember')
+            );
+        else{
+            $fields['password'] = ltrim($fields['password'],'0');
+            return $this->guard()->attempt(
+                $fields, $request->filled('remember')
+            );
+        }
     }
 }

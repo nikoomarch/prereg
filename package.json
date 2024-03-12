@@ -21,8 +21,10 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
+        "@ttskch/select2-bootstrap4-theme": "^1.4.0",
         "axios": "^0.19.0",
         "bootstrap-v4-rtl": "^4.3.1-2",
+        "nprogress": "^0.2.0",
         "persian-datepicker": "^1.2.0",
         "select2": "^4.0.8",
         "sweetalert2": "^8.10.1",

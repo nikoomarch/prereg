@@ -1,8 +1,8 @@
 <?php
 
-namespace studentPreRegisteration\Http\Controllers\Auth;
+namespace App\Http\Controllers\Auth;
 
-use studentPreRegisteration\Http\Controllers\Controller;
+use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 
 class ResetPasswordController extends Controller
@@ -21,7 +21,7 @@ class ResetPasswordController extends Controller
     use ResetsPasswords;
 
     /**
-     * Where to redirect users after resetting their password.
+     * Where to redirect group_manager after resetting their password.
      *
      * @var string
      */
