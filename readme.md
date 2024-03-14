@@ -1,4 +1,4 @@
-## Qom University Student Pre registration system
+## Pre-registration system for Qom University students
 
 [Introduction of the system by Qom University's CE Scientific Society](https://t.me/Ceqom/1133)
 
